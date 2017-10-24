@@ -12,5 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('');
 });
+
+Route::resource('publicaciones','PublicacionController');
+
+Route::resource('categorias', 'CategoriaController');
+
+Route::resource('mesas','MesaController');
+
+Route::post('putmesa','MesaController@actualizar');
