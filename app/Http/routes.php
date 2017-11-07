@@ -11,9 +11,38 @@
 |
 */
 
-Route::get('/', function () {
-    return view('');
+//Redirige a la vista para realizar el registro
+Route::get('register','LoginController@registrar');
+
+//Toma los datos del formulario de registro y si estan correctos crea el usuario
+Route::post('create', 'LoginController@create');
+
+//Valida email y password con la BD, si estan correctos loguea el usuario y redirige a mesas 
+Route::post('check', 'LoginController@check');
+
+//Destruye la session del usuario y redirige al login
+Route::get('logout', 'LoginController@logout');
+
+//Cuando se solicite la raiz, se verifica si el usuario esta logueado, si es asi se redirige a las mesas, si no se redirige al login
+Route::get('/',function(){
+	if(Auth::guest()){
+		return view ('login');
+	}else{
+		return redirect()->action('LoginController@home');
+	}
 });
+
+//Cuando se solicite el login, se verifica si el usuario esta logueado, si es asi se redirige a las mesas, si no se redirige al login
+Route::get('login',function(){
+	if(Auth::guest()){
+		return view ('login');
+	}else{
+		return redirect()->action('LoginController@home');
+	}
+});
+
+//Cuando se solicite las mesas, se verifica si el usuario esta logueado de ser asi se concede el acceso, si no se redirige al login
+Route::get('mesas', 'LoginController@home')->middleware('auth');
 
 Route::resource('publicaciones','PublicacionController');
 
