@@ -1,0 +1,90 @@
+.fondo {
+  background-color: #228276!important;
+}
+
+/*ANUNCIOS*/
+.menu .list .active img{
+  height: 270px;
+  width: 270px;
+  margin: 15px;
+}
+
+
+
+/* Iconos materialize*/
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(iconos/icoMate.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.titulo{
+    color: white;
+    font-size: 35px;
+    font-family: "Forte";
+}
+
+.item_conf{
+	margin: 20px;
+}
+
+.conf{
+  	color: white;
+    font-size: 15px;
+    vertical-align: middle;
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 1186px){
+
+	.logo{
+		margin-left: 35px;
+	}
+
+	.titulo{
+		margin-left: 0!important;
+		padding: 15px 0;
+	}
+
+}
+
+@media (max-width: 480px){
+
+	.titulo{
+		width: 130px!important;
+	}
+
+}
+
+@media (max-width: 310px){
+
+	.titulo{
+		 display: none !important;
+	}
+
+}
+
+.tit{
+    color: white;
+    font-size: 75px;
+    font-family: "Forte";
+    text-align: center;
+}
