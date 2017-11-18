@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Categoria;
 use App\Models\Mesa;
+use DB;
 use Validator;
 
 class CategoriaController extends Controller{
@@ -14,7 +15,6 @@ class CategoriaController extends Controller{
 		$categorias = Categoria::all()->where('estado',1);
 		return view('categorias.ver', compact('categorias'));
 	}
-
 
 	public function store(Request $request){
 		$datos = [];
@@ -30,11 +30,18 @@ class CategoriaController extends Controller{
 
 
 	public function show($id){
-		$categorias = Categoria::where('mesa_id', $id)->orderby('created_at', 'desc')->get();
-		
+
+		$categorias=DB::table('categorias')
+                    ->select('categorias.nombre','categorias.id','categorias.mesa_id', DB::raw('count(publicaciones.id) as publicaciones'))
+                    ->where('categorias.estado', 1)
+                    ->leftjoin('publicaciones', 'categorias.id', '=', 'publicaciones.categoria_id')
+                    ->groupBy('categorias.nombre')
+                    ->where('categorias.mesa_id', $id)
+                    ->get();
+       
 		$mesa = Mesa::where('id', $id)->select('id', 'nombre')->get();	 
 
-		return view('categorias.ver', ['categorias' => $categorias, 'mesa' => $mesa[0] ]);  
+		return view('categorias.ver', ['categorias' => $categorias, 'mesa' => $mesa[0]]);  
 	}
 
 	public function create(){
@@ -53,7 +60,13 @@ class CategoriaController extends Controller{
 
 		Categoria::where('id',  $request->id)->update(['nombre' => $request->nombre]);
 
-		return  redirect('categorias/'.$request->mesa_id)->with('message', 'Categoria editada!');; 
+		return  redirect('categorias/'.$request->mesa_id)->with('message', 'Categoria editada!'); 
 	}
 
+	public function deshabilitar($mesa,$id){
+		
+        Categoria::where('id', $id)->update(['estado' => 0]);
+
+        return redirect('categorias/'.$mesa)->with('message', 'Categoria eliminada Correctamente!');
+    }
 }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use App\Models\Mesa;
+use DB;
 
 class MesaController extends Controller
 {
@@ -17,8 +16,28 @@ class MesaController extends Controller
      */
     public function index()
     {
-        $mesas = Mesa::where('estado', 1)->get();
-        return view('mesas.ver', compact('mesas'));
+         $mesas = DB::table('mesas')
+                    ->select('mesas.id', 'mesas.nombre', 'mesas.estado',  DB::raw('count(categorias.id) as categorias'))
+                    ->where('mesas.estado', 1)
+                    ->leftjoin('categorias', 'mesas.id', '=', 'categorias.mesa_id')
+                    ->groupBy('mesas.nombre')
+                    ->get();
+
+        $publicaciones = DB::table('mesas')
+                            ->select( DB::raw('count(publicaciones.id) as publicaciones'))
+                            ->where('mesas.estado', 1 )
+                            ->leftjoin('categorias', 'mesas.id', '=', 'categorias.mesa_id')
+                            ->leftjoin('publicaciones', 'categorias.id', '=', 'publicaciones.categoria_id')
+                            ->groupBy('mesas.nombre')
+                            ->get();
+
+
+        foreach ($mesas as $key => $mesa) {
+            $mesa->publicaciones = $publicaciones[$key]->publicaciones;
+        }
+
+
+         return view('mesas.ver', compact('mesas'));
     }
 
     /**
@@ -90,5 +109,12 @@ class MesaController extends Controller
         $actualizar['nombre'] = $request->nombre;
         
         Mesa::where('id', $actualizar['id'])->update(['nombre' => $actualizar['nombre']]);        
+    }
+
+    public function deshabilitar($id){
+        
+        Mesa::where('id', $id)->update(['estado' => 0]);
+
+        return redirect('mesas')->with('message', 'Mesa eliminada Correctamente!');
     }
 }
