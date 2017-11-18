@@ -51,3 +51,11 @@ Route::resource('categorias', 'CategoriaController');
 Route::resource('mesas','MesaController');
 
 Route::post('putmesa','MesaController@actualizar');
+
+Route::resource('anuncios','AnuncioController');
+
+Route::get('publicaciones/{categoria}/e1/{id}', 'PublicacionController@deshabilitar');
+
+Route::get('categorias/{mesa}/e1/{id}','CategoriaController@deshabilitar');
+
+Route::get('mesas/e1/{id}','MesaController@deshabilitar');
