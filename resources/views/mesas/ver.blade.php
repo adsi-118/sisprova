@@ -1,8 +1,6 @@
 @extends('index')
 @section('styles')
-	<link rel="stylesheet" href="{{url('/')}}/css/mesaStyle.css">
     <link rel="stylesheet" href="{{url('/css/botonstyle.css')}}">
-	
 @endsection
 @section('content')
     <div class="row">
@@ -17,31 +15,55 @@
          <!-- MESA CREADA -->
     @if(Session::has('message'))
     <div class="alert bg-green animated fadeIn">
-        {{ Session::get('message') }}
+      <span style="font-size: 17px">{{ Session::get('message') }}</span>
     </div>
     @endif
             
             <div class="row">
                 @foreach($mesas as $mesa)
-                <div class="col-md-4">
-					
-                    <div class="info-box-3 bg-brown"  >
+
+                <div class="col-sm-6 col-md-4">
+                    
+                    <div class="menu-mesa">
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a  href="#editMesa" onclick="edit('{{url('/mesas')}}/{{$mesa->id}}/edit')" data-toggle="modal" class="waves-effect waves-block editar">Editar</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect waves-block editar"
+                                         onclick="eliminar({{$mesa->id}})">Eliminar</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box-3 mesa" onclick="window.location.href = '{{ url('categorias', $mesa->id) }}'">
                        
                         <div class="content">
-							
-							<div class="icon">
-								<i> <img src="{{url('/')}}/images/table.png" width="75px" height="75px"></i>
-							</div>
 
-							<div class="number">
-                                <a id="{{$mesa->id}}" class="btn bg-brown waves-effect" href="{{ url('categorias', $mesa->id) }}" style="text-decoration:none">{{strtoupper($mesa->nombre)}}</a>
-							</div>
-							<button type="button" class="btn bg-brown waves-effect" href="#editMesa" onclick="edit('{{url('/mesas/'.$mesa->id.'/edit')}}');" data-toggle="modal" style="padding-left: 5px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;">
-                            	<i class="material-icons">mode_edit</i>
-                            </button>
-							<button type="button" class="btn btn-danger waves-effect" style="padding-left: 5px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;">
-                            	<i class="material-icons">delete</i>
-                            </button>
+                            <div class="number">
+                                <span>{{strtoupper($mesa->nombre)}}</span>
+                            </div>
+                            
+                            <div class="info-mesa">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <span>Categorías:</span>
+                                        <span class="badge bg-pink">{{ $mesa->categorias}}</span>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <span>Publicaciones:</span>
+                                        <span class="badge bg-cyan">{{ $mesa->publicaciones}}</span>
+                                    </div>                                    
+                                </div>
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -62,7 +84,6 @@
                                 <div class="form-line">
                                     <label for="tablename">Nombre Mesa</label>
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                   
                                     <input type="hidden" id="idtable" name="id">
                                     <input id="tablename" name="nombre" class="form-control" type="text" required>
                                 </div>
@@ -101,7 +122,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />                
 
                         <div class="modal-body">
-                            <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre de la mesa.." required>
+                            <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre de la mesa.." required autofocus="">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -123,22 +144,35 @@
         *traer el nombre de la mesa que se va editar usando el metodo edit de restful 
         */
     
-        function edit(id){            
+        function edit(id){ 
+                       
             $.get(id,'', function(respuesta) {
                 var datos = JSON.parse(respuesta);
                 $.each(datos, function(index, val) {
-						$('#tablename').val(val.nombre);
+                        $('#tablename').val(val.nombre);
                         $('#idtable').val(val.id);
-				});
+                });
             });
         }
         
-        function trigger(){
-            
+        function trigger(){            
             var id = $('#idtable').val();
             var dato = $('#formedit').serialize();
             update(dato,id);
         }
+
+
+        function eliminar(id){            
+            var url = '{{url('/mesas/')}}'+"/e1/"+id;
+            var opcion = confirm("Realmente desea eliminar esta Mesa?");
+            if (opcion == true) {
+                location.href =url;
+            } else {
+                location.reload();
+            }
+        }
+
+
 
 /*no funciona*/
         function update(dato,id){
@@ -146,8 +180,8 @@
             $.post("putmesa",dato, function(respuesta) {
                 var datos = JSON.parse(respuesta);
                 $.each(datos, function(index, val) {
-						alert(val);
-				});
+                        alert(val);
+                });
             }); */
             
                 var url = '{{url('/mesas/')}}'+"/"+id;
@@ -158,6 +192,7 @@
                 data: dato,
                 success: function(data) {
                      location.reload();
+                     
                 }
             });        
             }

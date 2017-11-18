@@ -6,14 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>SOCLUB</title>
-     
+
      @yield('styles')
-    <!-- Favicon-->
+    <!-- Icono-->
     <link rel="icon" href="{{url('favicon.ico')}}" type="image/x-icon">
 
-    <!-- Google Fonts -->
-    <link href="{{url('fonts/roboto.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('fonts/material.css')}}" rel="stylesheet" type="text/css">
+    <!-- Fuentes de iconos y tipografia -->
+    <link rel="stylesheet" href="{{url('css/fonts.css')}}"  type="text/css">
 
     <!-- Bootstrap Core Css -->
     <link href="{{url('plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet">
@@ -27,19 +26,25 @@
     <!-- Morris Chart Css-->
     <link href="{{url('plugins/morrisjs/morris.css')}}" rel="stylesheet" />
 
+    <!-- Custom Css -->
+    <link href="{{url('css/style.css')}}" rel="stylesheet">
+
+    <!-- Plugin imagenes -->
     <link rel="stylesheet" type="text/css" href="{{ url('lightbox2/css/lightbox.min.css') }}">
 
-    <!-- Custom Css -->
-     <link href="{{url('css/style.css')}}" rel="stylesheet">
-
+    <!-- Estilos SOCLUB -->
     <link rel="stylesheet" type="text/css" href="{{url('css/estilos_soclub.css')}}">
 
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <!-- Todos los temas-->
     <link href="{{url('css/themes/all-themes.css')}}" rel="stylesheet" />
 </head>
 
-<body class="theme-red">
-    <!-- Page Loader -->
+
+<body class="theme-green">
+
+    <input type="hidden" name="_url" value="{{ url('') }}">  
+
+    <!--INICIO mientras carga la pagina-->
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">
@@ -55,11 +60,13 @@
             <p>Espere un momento...</p>
         </div>
     </div>
-    <!-- #END# Page Loader -->
+    <!--FIN mientras carga la pagina-->
+
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
-    <!-- Search Bar -->
+
+    <!-- INICIO Barra de busqueda -->
     <div class="search-bar">
         <div class="search-icon">
             <i class="material-icons">search</i>
@@ -69,31 +76,38 @@
             <i class="material-icons">close</i>
         </div>
     </div>
-    <!-- #END# Search Bar -->
-    <!-- Top Bar -->
+    <!-- FIN Barra de busqueda -->
+
+    <!-- INICIO Barra de arriba -->
     <nav class="navbar">
-        <div class="container-fluid cabecera">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <a href="index.html"><img src="{{url('images/logo.png')}}" align="left" style="width: 70px; height: 50px; margin-right: 15px"></a>
-                <a class="navbar-brand titulo_p" href="index.html">SOCLUB</a>
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <div class="logo">
+                    <a href="{{url('/mesas')}}"><img src="{{url('images/logo.png')}}" align="left" style="width: 70px; height: 50px; margin-left: 10px;"></a>
+                    <a class="navbar-brand titulo" href="{{url('/mesas')}}">SOCLUB</a>
+                </div>
             </div>
+
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- Call Search -->
+                    <!-- INICIO Icono buscador -->
                     <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
-                    <!-- #END# Call Search -->
-                    <!-- Notifications -->
+                    <!-- FIN Icono buscador -->
+                    <!-- INICIO Novedades -->
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
-                            <span class="label-count">3</span>
+                            <span class="label-count">5</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="header">NOVEDADES</li>
                             <li class="body">
                                 <ul class="menu">
-                                    <li>
+                                   <li>
                                         <a href="javascript:void(0);">
+                                            <!-- Clase para los iconos de las notificaciones -->
                                             <div class="icon-circle bg-light-green">
                                                 <i class="material-icons">create_new_folder</i>
                                             </div>
@@ -131,6 +145,32 @@
                                             </div>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">mode_edit</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Se creó una nueva mesa</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> hace 1 dia
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">mode_edit</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Se creó una nueva mesa</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> hace 1 dia
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="footer">
@@ -138,104 +178,116 @@
                             </li>
                         </ul>
                     </li>
-                    <!-- #END# Notifications -->                    
+                    <!-- FIN Novedades -->
+
+                    <!-- INICIO Icono cerrar sesion -->
                     <li class="pull-right"><a href="pages/examples/sign-in.html" data-close="true"><i class="material-icons">power_settings_new</i></a></li>
+                    <!-- FIN Icono cerrar sesion -->
+
+                    <!-- INICIO Icono perfi -->
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">person</i></a></li>
+                    <!-- FIN Icono perfi -->
                 </ul>
             </div>
         </div>
     </nav>
-    <!-- #Top Bar -->
+    <!-- FIN Barra de arriba -->
+
     <section>
-        
-         <!-- Left Sidebar -->
+        <!-- INICIO Barra izquierda -->
         <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu" style="height: 1000px">
+            <!-- INICIO Anuncios -->
+            <div class="menu">
                 <ul class="list ima">
-                    <!--<li class="header" >ANUNCIOS</li>-->
                     <li class="active">
-                        
-                           <!-- <i class="material-icons">home</i>
-                            <span>Home</span>-->
-                        
-                     <li class="header" ><b>ANUNCIOS</b></li>
-
-                     <li>
-                        <a data-lightbox="anuncios" href="{{url('images/anuncio1.png')}}" >
-                            <img src="{{url('images/anuncio1.png')}}" class="ima">
-                        </a>
-                        <a data-lightbox="anuncios" href="{{url('images/anuncio2.png')}}" >
-                            <img src="{{url('images/anuncio2.png')}}" class="ima">
-                        </a>
-                        <a data-lightbox="anuncios" href="{{url('images/anuncio3.png')}}" >
-                            <img src="{{url('images/anuncio3.png')}}" class="ima">
-                        </a>
+                   <!--Espacio donde se visualizaran los anuncios-->
                     </li>
-                             
-            <!-- #Footer -->
-
-        <!-- Right Sidebar -->
-        <aside id="rightsidebar" class="right-sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="image">
-                    <img src="{{url('images/user.png')}}" width="48" height="48" alt="User" />
-                </div>
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b>Estiven Sanchez</b></div>
-                    <div class="email"><b>estiven@misena.edu.co</b></div>
-                </div>
+                </ul>
             </div>
-            <!-- #User Info -->
-            
-            <div class="info-box bg-green hover-expand-effect item_conf">
-                <div class="icon">
-                    <i class="material-icons">account_circle</i>
-                </div>
-                <div class="content">
-                    <div class="conf">PERFIL</div>
-                </div>
-            </div> 
+            <!-- FIN Anuncios -->
 
-             <div class="info-box  bg-orange  hover-expand-effect item_conf">
-                <div class="icon">
-                    <i class="material-icons">stars</i>
-                </div>
-                <div class="content">
-                    <div class="conf">MESAS FAVORITAS</div>
-                </div>
-            </div> 
-
-            <div class="info-box bg-green hover-expand-effect item_conf">
-                <div class="icon">
-                    <i class="material-icons">people</i>
-                </div>
-                <div class="content">
-                    <div class="conf">CONTACTOS</div>
-                </div>
-            </div> 
-
-            <div class="info-box bg-orange hover-expand-effect item_conf">
-                <div class="icon">
-                    <i class="material-icons">settings</i>
-                </div>
-                <div class="content">
-                    <div class="conf">CONFIGURACIONES</div>
-                </div>
+            <!-- INICIO Boton del chat -->
+            <div class="legal">
+                <center>
+                    <h3>BOTON DEL CHAT</h3>
+                </center>
             </div>
+            <!-- FIN Boton del chat-->
+
         </aside>
-        <!-- #END# Right Sidebar -->
+        <!-- FIN Barra izquierda -->
+
+        <!-- INICIO Barra derecha -->
+        <aside id="rightsidebar" class="right-sidebar">
+                <!-- INICIO Informacion del perfil -->
+                <div class="user-info">
+                    <div class="image">
+                        <img src="{{url('images/user.png')}}" width="48" height="48" alt="User" />
+                    </div>
+                    <div class="info-container">
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b>Estiven Sanchez</b></div>
+                        <div class="email"><b>estiven@misena.edu.co</b></div>
+                    </div>
+                </div>
+
+                <div class="info-box bg-green hover-expand-effect item_conf">
+                    <div class="icon">
+                        <i class="material-icons">account_circle</i>
+                    </div>
+                    <div class="content">
+                        <h3 class="conf">PERFIL</h3>
+                    </div>
+                </div> 
+
+                 <div class="info-box  bg-orange  hover-expand-effect item_conf">
+                    <div class="icon">
+                        <i class="material-icons">stars</i>
+                    </div>
+                    <div class="content">
+                        <h3 class="conf">MESAS FAVORITAS</h3>
+                    </div>
+                </div> 
+
+                <div class="info-box bg-green hover-expand-effect item_conf">
+                    <div class="icon">
+                        <i class="material-icons">people</i>
+                    </div>
+                    <div class="content">
+                        <h3 class="conf">CONTACTOS</h3>
+                    </div>
+                </div> 
+
+                <div class="info-box bg-orange hover-expand-effect item_conf">
+                    <div class="icon">
+                        <i class="material-icons">settings</i>
+                    </div>
+                    <div class="content">
+                        <h3 class="conf">CONFIGURACIONES</h3>
+                    </div>
+                </div>
+                <!-- #FIN Informacion del perfil -->
+
+        </aside>
+        <!-- FIN Barra derecha -->
     </section>
 
+    <!-- INICIO Contenido -->
     <section class="content">
-        <div class="container-fluid">        
-            @yield('content')
+        <div class="container-fluid">
+            <!-- INICIO Mesas -->
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="mesas">                 
+                        <!-- <h1 align="center">CONTENIDO</h1>-->
+                    @yield('content')
+                    </div>
+                </div>
+            </div>
+            <!-- FIN Mesas -->
         </div>
+
     </section>
+    <!-- FIN Contenido -->
 
     <!-- Jquery Core Js -->
     <script src="{{url('plugins/jquery/jquery.min.js')}}"></script>
@@ -272,14 +324,48 @@
     <!-- Sparkline Chart Plugin Js -->
     <script src="{{url('plugins/jquery-sparkline/jquery.sparkline.js')}}"></script>
 
+    <!-- Light box Plugin Js-->
     <script type="text/javascript" src="{{ url('lightbox2/js/lightbox.min.js') }}"></script>    
 
+    
+     <!--Script que se encarga de mostrar los anuncios en todas las vistas-->
+    <script type="text/javascript">
+
+        var url = $('[name="_url"]').val();
+
+        $.ajax({
+            url : url + '/anuncios',
+            method : 'GET',
+            type : 'JSON',
+
+            success : function(data){
+
+                $('.ima .active').html('<li class="header"><b>ANUNCIOS</b></li>');
+
+                $.each(data, function(i, anuncio){
+                    $('.ima .active').append('<li><a data-lightbox="anuncios" data-title="'+anuncio.titulo+'" href="'+url+'/images/'+anuncio.foto+'" ><img src="'+url+'/images/anuncios/'+anuncio.foto+'" class="ima"></a></li>');
+                });
+            } 
+        });
+
+    </script>
     <!-- Custom Js -->
     <script src="{{url('js/admin.js')}}"></script>
-    <script src="{{url('js/pages/index.js')}}"></script>
+
+    <!-- Modificacion del scroll --> 
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $('.slimScrollDiv').css('height', '100%');
+            $('.slimScrollDiv .list').css('height', '100%');
+            $('.slimScrollBar').css('width', '10px');
+        });
+
+    </script>
 
     <!-- Demo Js -->
     <script src="{{url('js/demo.js')}}"></script>
+
     @yield('script')
 </body>
 
