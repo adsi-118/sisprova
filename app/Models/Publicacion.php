@@ -8,7 +8,7 @@ class Publicacion extends Model
 {
     protected $table = 'publicaciones';
 
- 	protected $fillable = ['usuario_id','created_at','valoracion','texto','foto', 'categoria_id'];
+ 	protected $fillable = ['usuario_id','created_at','valoracion','texto','foto', 'categoria_id','denuncias', 'estado'];
 
  	public function usuario(){
  		return $this->belongsTo('App\Models\Usuario', 'usuario_id');
