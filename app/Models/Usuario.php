@@ -12,8 +12,4 @@ class Usuario extends Authenticatable
  $table = 'usuarios';
 $fillable = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'password', 'genero', 'rol_id', 'estado', 'centro_id'];
     
-$table = "usuarios";
-	$fillable = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'password'];
-
-   
 }
