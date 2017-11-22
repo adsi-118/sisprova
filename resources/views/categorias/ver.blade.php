@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('styles')
-        <link rel="stylesheet" type="text/css" href="{{ url('/css/botonstyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url('/css/botonstyle.css') }}">
 @stop
 
 @section('content')
@@ -26,14 +26,14 @@
 
       @foreach ($categorias as $categoria)
 
-      <div class="col-md-4">        
-        <div class="info-box card" style="height: 110px">                
-          <div class="icon bg-purple">
-            <i class="material-icons">bookmark</i>
+      <div class="col-md-4" id="contenedor-categoria">        
+        <div class="info-box card" style="height: 134px">                
+          <div class="icon bg-purple ">
+            <i class="material-icons " style="margin-top: 14px">bookmark</i>
           </div>
           <div class="col-md-10" style="padding-left: 0px;">                      
             <div class="content">            
-              <div class="categoria" style="margin-top: 10px;">
+              <div class="categoria" style="margin-top: 19px;">
                 <a href="{{url('publicaciones', $categoria->id)}}" style="text-decoration:none">{{strtoupper($categoria->nombre)}}</a>
               </div>                    
             </div>
@@ -47,7 +47,7 @@
             </div>                         
           </div> 
           <div class="col-md-2">
-            <div class="header ">
+            <div class="header " style="padding: 18px;">
               <ul class="header-dropdown m-r--5">
                 <li class="dropdown">
                   <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -55,8 +55,8 @@
                   </a>
                   <ul class="dropdown-menu pull-right">
                     <li><a  href="#modalEditar" data-toggle="modal" onclick="editar({{$categoria->id}},'{{$categoria->nombre}}')" class="waves-effect waves-block editar">Editar</a></li>
-                    <li><a  href="#modalEditar"  onclick="eliminar({{$categoria->id}},'{{$categoria->mesa_id}}')" class="waves-effect waves-block editar">Eliminar</a></li>
-
+                    <li><a  href="#modalEditar"  onclick="deshabilitar({{$categoria->id}},'{{$categoria->mesa_id}}')" class="waves-effect waves-block editar">Eliminar</a></li>
+                    <li><a  href="#modalEditar"  onclick="eliminar({{$categoria->id}},'{{$categoria->mesa_id}}')" class="waves-effect waves-block editar">Eliminar-Admin</a></li>
                   </ul>
                 </li>
               </ul>
@@ -67,7 +67,7 @@
       @endforeach
 
     </div>
-</div>
+  </div>
 </div>
 
 <div class="contenedor">
@@ -141,32 +141,51 @@
 @stop
 @section('script')
 
- <script type="text/javascript">
+<script type="text/javascript">
 
   setTimeout(function(){
-            $('.alert').addClass('fadeOut');
-        }, 4000);
+    $('.alert').addClass('fadeOut');
+  }, 4000);
 
-        setTimeout(function(){
-            $('.alert').remove();
-        }, 5000);
+  setTimeout(function(){
+    $('.alert').remove();
+  }, 5000);
 
 
-    function editar(id,nombre){
-        $('#input_id').val(id);        
-        $('#input_nombre').val(nombre);
+  function editar(id,nombre){
+    $('#input_id').val(id);        
+    $('#input_nombre').val(nombre);
+  }
+
+  function deshabilitar(id,idMesa){            
+    var url = '{{url('/categorias/')}}'+"/"+idMesa+"/e1/"+id;
+    var opcion = confirm("Realmente desea eliminar esta Categoría?");
+    if (opcion == true) {
+      location.href =url;
+    } else {
+      location.reload();
     }
+  }
 
-    function eliminar(id,idMesa){            
-            var url = '{{url('/categorias/')}}'+"/"+idMesa+"/e1/"+id;
-            var opcion = confirm("Realmente desea eliminar esta Categoría?");
-            if (opcion == true) {
-                location.href =url;
-            } else {
-                location.reload();
-            }
-        }
+  function eliminar(id){
+    var url = '{{url('/categorias/')}}'+"/"+id;
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('input[name=_token]').val()
+      }
+    });
 
-  </script>
+    $.ajax({
+      url:url,
+      type: 'DELETE',     
+      success:function(data){                 
+        $('#contenedor-categoria'+id).remove();
+        location.reload();
+      }
+    });
+  }
+
+
+</script>
 
 @stop

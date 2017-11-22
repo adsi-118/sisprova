@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv='Expires' content='0'/>
+    <meta http-equiv='Pragma' content='no-cache'/>
     <title>SOCLUB</title>
 
      @yield('styles')
@@ -71,7 +73,7 @@
         <div class="search-icon">
             <i class="material-icons">search</i>
         </div>
-        <input type="text" placeholder="Buscar...">
+        <input type="text" placeholder="Buscar..." id="buscar">
         <div class="close-search">
             <i class="material-icons">close</i>
         </div>
@@ -181,7 +183,7 @@
                     <!-- FIN Novedades -->
 
                     <!-- INICIO Icono cerrar sesion -->
-                    <li class="pull-right"><a href="pages/examples/sign-in.html" data-close="true"><i class="material-icons">power_settings_new</i></a></li>
+                    <li class="pull-right"><a href="{{ url('logout') }}" data-close="true"><i class="material-icons">power_settings_new</i></a></li>
                     <!-- FIN Icono cerrar sesion -->
 
                     <!-- INICIO Icono perfi -->
@@ -230,40 +232,53 @@
                     </div>
                 </div>
 
-                <div class="info-box bg-green hover-expand-effect item_conf">
-                    <div class="icon">
-                        <i class="material-icons">account_circle</i>
-                    </div>
-                    <div class="content">
-                        <h3 class="conf">PERFIL</h3>
-                    </div>
-                </div> 
+                <div style="height: 350px; overflow-y: scroll;">
+                    <div class="info-box bg-green hover-expand-effect item_conf">
+                        <div class="icon">
+                            <i class="material-icons">account_circle</i>
+                        </div>
+                        <div class="content">
+                            <h3 class="conf">PERFIL</h3>
+                        </div>
+                    </div> 
 
-                 <div class="info-box  bg-orange  hover-expand-effect item_conf">
-                    <div class="icon">
-                        <i class="material-icons">stars</i>
-                    </div>
-                    <div class="content">
-                        <h3 class="conf">MESAS FAVORITAS</h3>
-                    </div>
-                </div> 
+                     <div class="info-box  bg-orange  hover-expand-effect item_conf">
+                        <div class="icon">
+                            <i class="material-icons">stars</i>
+                        </div>
+                        <div class="content">
+                            <h3 class="conf">MESAS FAVORITAS</h3>
+                        </div>
+                    </div> 
 
-                <div class="info-box bg-green hover-expand-effect item_conf">
-                    <div class="icon">
-                        <i class="material-icons">people</i>
-                    </div>
-                    <div class="content">
-                        <h3 class="conf">CONTACTOS</h3>
-                    </div>
-                </div> 
+                    <div class="info-box bg-green hover-expand-effect item_conf">
+                        <div class="icon">
+                            <i class="material-icons">people</i>
+                        </div>
+                        <div class="content">
+                            <h3 class="conf">CONTACTOS</h3>
+                        </div>
+                    </div> 
 
-                <div class="info-box bg-orange hover-expand-effect item_conf">
-                    <div class="icon">
-                        <i class="material-icons">settings</i>
+                    <div class="info-box bg-orange hover-expand-effect item_conf">
+                        <div class="icon">
+                            <i class="material-icons">settings</i>
+                        </div>
+                        <div class="content">
+                            <h3 class="conf">CONFIGURACIONES</h3>
+                        </div>
                     </div>
-                    <div class="content">
-                        <h3 class="conf">CONFIGURACIONES</h3>
+
+                    <a href="{{url('anuncios')}}" style="text-decoration: none;">
+                    <div class="info-box bg-green hover-expand-effect item_conf">
+                        <div class="icon">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <div class="content">
+                            <h3 class="conf">GESTIONAR ANUNCIOS</h3>
+                        </div>
                     </div>
+                    </a>
                 </div>
                 <!-- #FIN Informacion del perfil -->
 
@@ -278,14 +293,12 @@
             <div class="row clearfix">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="mesas">                 
-                        <!-- <h1 align="center">CONTENIDO</h1>-->
                     @yield('content')
                     </div>
                 </div>
             </div>
             <!-- FIN Mesas -->
         </div>
-
     </section>
     <!-- FIN Contenido -->
 
@@ -340,10 +353,10 @@
 
             success : function(data){
 
-                $('.ima .active').html('<li class="header"><b>ANUNCIOS</b></li>');
+                $('.ima .active').html('');
 
                 $.each(data, function(i, anuncio){
-                    $('.ima .active').append('<li><a data-lightbox="anuncios" data-title="'+anuncio.titulo+'" href="'+url+'/images/'+anuncio.foto+'" ><img src="'+url+'/images/anuncios/'+anuncio.foto+'" class="ima"></a></li>');
+                    $('.ima .active').append('<li><a data-lightbox="anuncios" data-title="'+anuncio.titulo+'" href="'+url+'/images/anuncios/'+anuncio.foto+'" ><img src="'+url+'/images/anuncios/'+anuncio.foto+'" class="ima"></a></li>');
                 });
             } 
         });
@@ -361,7 +374,18 @@
             $('.slimScrollBar').css('width', '10px');
         });
 
+        $('#buscar').keypress(function(e){
+            if(e.which == 13) {
+                location.href = url + '/busqueda/' + $(this).val();
+            }
+        });
+
     </script>
+    <script type='text/javascript'>
+        if (history.forward(1)) {
+            location.replace(history.forward(1));
+        }
+    </script>";
 
     <!-- Demo Js -->
     <script src="{{url('js/demo.js')}}"></script>

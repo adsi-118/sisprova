@@ -36,14 +36,18 @@
                                     </li>
                                     <li>
                                         <a href="#" class="waves-effect waves-block editar"
-                                         onclick="eliminar({{$mesa->id}})">Eliminar</a>
+                                         onclick="deshabilitar({{$mesa->id}})">Eliminar</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="waves-effect waves-block editar"
+                                         onclick="eliminar({{$mesa->id}})">Eliminar-Admin</a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="info-box-3 mesa" onclick="window.location.href = '{{ url('categorias', $mesa->id) }}'">
+                    <div id="mesa-elimar" class="info-box-3 mesa" onclick="window.location.href = '{{ url('categorias', $mesa->id) }}'">
                        
                         <div class="content">
 
@@ -57,7 +61,7 @@
                                         <span>Categorías:</span>
                                         <span class="badge bg-pink">{{ $mesa->categorias}}</span>
                                     </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-6" style="    padding-left: 0px; padding-right: 0px;">
                                         <span>Publicaciones:</span>
                                         <span class="badge bg-cyan">{{ $mesa->publicaciones}}</span>
                                     </div>                                    
@@ -162,7 +166,7 @@
         }
 
 
-        function eliminar(id){            
+        function dehabilitar(id){            
             var url = '{{url('/mesas/')}}'+"/e1/"+id;
             var opcion = confirm("Realmente desea eliminar esta Mesa?");
             if (opcion == true) {
@@ -172,6 +176,23 @@
             }
         }
 
+        function eliminar(id){
+                 var url = '{{url('/mesas/')}}'+"/"+id;
+            $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('input[name=_token]').val()
+                    }
+                });
+
+        $.ajax({
+            url:url,
+            type: 'DELETE',         
+            success:function(data){                                 
+                $('#mesa-elimar'+id).remove();
+                location.reload();
+            }
+        });
+        }
 
 
 /*no funciona*/
