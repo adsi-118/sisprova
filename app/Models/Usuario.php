@@ -8,7 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Usuario extends Authenticatable
 {
-    protected $fillable = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'password'];
+
+ $table = 'usuarios';
+$fillable = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'password', 'genero', 'rol_id', 'estado', 'centro_id'];
+    
+$table = "usuarios";
+	$fillable = ['nombre', 'apellido', 'fecha_nacimiento', 'email', 'password'];
 
    
 }
