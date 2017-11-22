@@ -10,7 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 //Redirige a la vista para realizar el registro
 Route::get('register','LoginController@registrar');
 
@@ -28,7 +27,7 @@ Route::get('/',function(){
 	if(Auth::guest()){
 		return view ('login');
 	}else{
-		return redirect()->action('LoginController@home');
+		return redirect()->action('MesaController@index');
 	}
 });
 
@@ -37,25 +36,52 @@ Route::get('login',function(){
 	if(Auth::guest()){
 		return view ('login');
 	}else{
-		return redirect()->action('LoginController@home');
+		return redirect()->action('MesaController@index');
 	}
 });
 
-//Cuando se solicite las mesas, se verifica si el usuario esta logueado de ser asi se concede el acceso, si no se redirige al login
-Route::get('mesas', 'LoginController@home')->middleware('auth');
+//Cuando se solicite el registro, se verifica si el usuario esta logueado, si es asi se redirige a las mesas, si no se redirige al login
+Route::get('register',function(){
+	if(Auth::guest()){
+		return view ('registrar');
+	}else{
+		return redirect()->action('MesaController@index');
+	}
+});
 
-Route::resource('publicaciones','PublicacionController');
 
-Route::resource('categorias', 'CategoriaController');
+//para acceder a las rutas el usuario debe estar logueado
 
-Route::resource('mesas','MesaController');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::post('putmesa','MesaController@actualizar');
+ 	Route::resource('categorias', 'CategoriaController');
 
-Route::resource('anuncios','AnuncioController');
+	Route::get('mesas', 'MesaController@index');
 
-Route::get('publicaciones/{categoria}/e1/{id}', 'PublicacionController@deshabilitar');
+	Route::resource('mesas','MesaController');
 
-Route::get('categorias/{mesa}/e1/{id}','CategoriaController@deshabilitar');
 
-Route::get('mesas/e1/{id}','MesaController@deshabilitar');
+	Route::post('putmesa','MesaController@actualizar');
+
+	Route::resource('anuncios','AnuncioController');
+
+	Route::resource('publicaciones','PublicacionController');
+
+	Route::get('publicaciones/{categoria}/e1/{id}', 'PublicacionController@deshabilitar');
+
+	Route::get('categorias/{mesa}/e1/{id}','CategoriaController@deshabilitar');
+
+	Route::get('mesas/e1/{id}','MesaController@deshabilitar');
+
+	Route::get('busqueda/{filtro}', 'MesaController@busqueda');
+
+	Route::get('comentarios/e1/{id}','ComentarioController@deshabilitar');
+
+	Route::resource('comentarios','ComentarioController');
+
+	Route::get('anuncios/e1/{id}','AnuncioController@deshabilitar');
+
+
+});
+
+	
