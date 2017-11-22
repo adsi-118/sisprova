@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+
 
 use App\Http\Requests;
-
+use Request;
 use App\Models\Anuncio;
-
 class AnuncioController extends Controller
 {
     /**
@@ -17,19 +16,20 @@ class AnuncioController extends Controller
      */
     public function index()
     {
-        $anuncios = Anuncio::all()->where('estado',1);
+         $anuncios = Anuncio::all()->where('estado',1);
 
         if (Request::ajax()) {
             return response()->json($anuncios);
         }
 
-        return view('anuncios.ver', compact('categorias'));
+        return view('anuncios.ver', compact('anuncios'));
+
     }
 
     /**
      * Show the form for creating a new resource.
      *
-         * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -66,7 +66,8 @@ class AnuncioController extends Controller
      */
     public function edit($id)
     {
-        //
+        $anuncios = Anuncio::select('titulo','id','foto')->where('id',$id)->get();
+        echo json_encode($anuncios);
     }
 
     /**
@@ -76,9 +77,19 @@ class AnuncioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+
+       Anuncio::where('id',  $_REQUEST['id'])->update(['titulo' =>  $_REQUEST['titulo']]);
+       $anuncios = Anuncio::select('titulo','id','foto')->where('id',$_REQUEST['id'])->get();
+        echo json_encode($anuncios);
+    }
+
+    public function deshabilitar($id)
+    {
+        Anuncio::where('id', $id)->update(['estado' => 0]);
+        echo "Anuncio eliminado!!";
     }
 
     /**
@@ -89,6 +100,6 @@ class AnuncioController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Anuncio::destroy($id);
     }
 }
