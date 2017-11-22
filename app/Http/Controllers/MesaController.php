@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\Mesa;
+use App\Models\Publicacion;
+use App\Models\Categoria;
+use App\Models\Usuario;
 use DB;
 
 class MesaController extends Controller
@@ -100,7 +103,7 @@ class MesaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Mesa::destroy($id);
     }
 
     public function update(Request $request)
@@ -117,4 +120,27 @@ class MesaController extends Controller
 
         return redirect('mesas')->with('message', 'Mesa eliminada Correctamente!');
     }
+
+     public function busqueda($filtro){
+
+        $mesas = Mesa::where('nombre', 'LIKE', "%{$filtro}%")->orderBy('nombre')->get();
+        
+        $categorias = Categoria::where('nombre', 'LIKE', "%{$filtro}%")->orderBy('nombre')->get();
+
+        $publicaciones = Publicacion::where('texto', 'LIKE', "%{$filtro}%")->orderBy('texto')->get();
+
+        foreach ($publicaciones as $indice => $publicacion) {
+            $publicaciones[$indice]->texto = str_replace($filtro, "<b>{$filtro}</b>", $publicacion->texto );
+        }
+           
+        $usuarios = Usuario::where('nombre', 'LIKE', "%{$filtro}%")
+                            ->where('rol_id','<>',1)
+                            ->orderBy('nombre')->get();
+                            
+
+        return view('busqueda.buscar',[ 'mesas'=>$mesas, 'categorias'=>$categorias,'publicaciones'=>$publicaciones, 'usuarios' => $usuarios]);
+
+
+    }
+
 }

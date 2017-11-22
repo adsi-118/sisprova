@@ -38,7 +38,7 @@ class PublicacionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\oHttp\Response
      */
     public function store(Request $request)
     {
@@ -170,6 +170,6 @@ class PublicacionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Publicacion::destroy($id);
     }
 }
