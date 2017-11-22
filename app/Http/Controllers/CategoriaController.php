@@ -29,14 +29,14 @@ class CategoriaController extends Controller{
 	}
 
 
-	public function show($id){
+	public function show($id){	
 
 		$categorias=DB::table('categorias')
                     ->select('categorias.nombre','categorias.id','categorias.mesa_id', DB::raw('count(publicaciones.id) as publicaciones'))
-                    ->where('categorias.estado', 1)
                     ->leftjoin('publicaciones', 'categorias.id', '=', 'publicaciones.categoria_id')
                     ->groupBy('categorias.nombre')
                     ->where('categorias.mesa_id', $id)
+                    ->where('categorias.estado', 1 )
                     ->get();
        
 		$mesa = Mesa::where('id', $id)->select('id', 'nombre')->get();	 
@@ -68,5 +68,16 @@ class CategoriaController extends Controller{
         Categoria::where('id', $id)->update(['estado' => 0]);
 
         return redirect('categorias/'.$mesa)->with('message', 'Categoria eliminada Correctamente!');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Categoria::destroy($id);
     }
 }
